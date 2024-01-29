@@ -22,3 +22,8 @@ def prog_lang_ikm():
     if row:
         design.append(row)
     return InlineKeyboardMarkup(inline_keyboard=design)
+
+def accept_denied_btn():
+    deny_btn = InlineKeyboardButton(text="🔴 DENY", callback_data="deny")
+    accept_btn = InlineKeyboardButton(text="🟢 ACCEPT", callback_data="accept")
+    return InlineKeyboardMarkup(inline_keyboard=[[deny_btn, accept_btn]])

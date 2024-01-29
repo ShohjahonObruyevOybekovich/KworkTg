@@ -25,6 +25,9 @@ async def command_start_handler(message: Message, state : FSMContext) -> None:
         await message.answer(f"Hello, {hbold(message.from_user.full_name)}!")
         await message.answer(f"Tilni tanlang!" , reply_markup=language_ibtn())
     else:
+        data = await state.get_data()
+        data["lang"] = user[0].lang
+        await state.set_data(data)
         await message.answer("Menu", reply_markup=menu_btn(user[0].lang))
 
 
@@ -50,26 +53,11 @@ async def change_lang_handler(call : CallbackQuery , state : FSMContext):
     data = await state.get_data()
     data["lang"] = call.data
     await state.set_data(data)
-    query = update(User).values(lang = call.data).where(User.chat_id == call.message.from_user.id)
+    query = update(User).values(lang = call.data).where(User.chat_id == call.from_user.id)
+    print(query)
     session.execute(query)
     session.commit()
     await call.message.answer("Change Success !" , reply_markup=menu_btn(call.data))
 
 
-@dp.message(lambda msg : msg.text in [data['uz']["freelancer"],data['en']["freelancer"]])
-async def freelancer_handler(msg : Message , state : FSMContext):
-    await state.set_state(UserState.prog_lang)
-    await msg.answer("Programmer lang ", reply_markup=prog_lang_ikm())
-
-
-@dp.message(UserState.prog_lang)
-async def prog_lang_handler(msg : Message):
-    pass
-
-@dp.message(UserState.phone)
-async def phone_handler(msg : Message , state : FSMContext):
-    phone_number = msg.contact.phone_number
-    query = update(User).values(phone=phone_number).where(User.chat_id == msg.from_user.id)
-    session.execute(query)
-    session.commit()
 

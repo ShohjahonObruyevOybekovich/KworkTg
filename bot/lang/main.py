@@ -5,14 +5,26 @@ data = {
         "vacancies": "💼 Vakasiyalar/Vakansiya joylashtirish",
         "change_lang": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Tilni o'zgartirish",
         "phone_number": "☎️Telefon raqam",
+        "order": "Buyurtma Berish 📬",
+        "order_history": "Buyurtma tarixi 📜",
+        "back": "🔙 ortga",
+        "prog_lang": "Dasturlash tilini tanlang 👇",
+        "title": "Buyurtma nomini kiriting 👇",
+        "description": "Buyurtma haqida malumot kiriting 👇",
+        "price": "Buyurtma narxini kiriting 🤑",
     },
     "en": {
         "freelancer": "🧑🏻‍💻 I am freelancer",
         "customer": "👤 I am customer",
         "vacancies": "💼 Apply Vacancy/Vacancies",
         "change_lang": "🇺🇿 Change language",
-        "phone_number": "☎ Phone number"
-
-
+        "phone_number": "☎ Phone number",
+        "order": "Placing an order 📬",
+        "order_history": "Order history 📜",
+        "back": "🔙 Back",
+        "prog_lang": "Choose programming language 👇",
+        "title": "Enter order's title 👇",
+        "description": "Enter description for your order 👇",
+        "price": "Enter price for your order 🤑"
     },
 }

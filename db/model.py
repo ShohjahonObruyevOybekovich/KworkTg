@@ -8,8 +8,7 @@ Base = declarative_base()
 
 class User(Base):
     __tablename__ = "users"
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    chat_id: Mapped[int] = mapped_column(unique=True)
+    chat_id: Mapped[int] = mapped_column(__type_pos=BIGINT,primary_key=True)
     phone: Mapped[str] = mapped_column(nullable=True)
     lang: Mapped[str] = mapped_column()
     join_date: Mapped[str] = mapped_column(__type_pos=TIMESTAMP, default=func.current_timestamp)
@@ -21,12 +20,13 @@ class ProgLang(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column()
     freelancers : Mapped[List['Freelancer']] = relationship(back_populates="prog_lang")
+    products : Mapped[list['Product']] = relationship(back_populates="prog_lang")
 
 
 class Freelancer(Base):
     __tablename__ = "freelancers"
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    chat_id: Mapped[int] = mapped_column(ForeignKey("users.tg_id"))
+    chat_id: Mapped[int] = mapped_column(ForeignKey("users.chat_id"))
     prog_lang_id: Mapped[int] = mapped_column(ForeignKey("prog_langs.id"))
     join_date: Mapped[str] = mapped_column(__type_pos=TIMESTAMP, default=datetime.datetime.now())
     prog_lang : Mapped["ProgLang"] = relationship(back_populates="freelancers")
@@ -35,10 +35,9 @@ class Freelancer(Base):
 class Customer(Base):
     __tablename__ = "customers"
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.chat_id"))
     join_date: Mapped[str] = mapped_column(__type_pos=TIMESTAMP, default=datetime.datetime.now())
     user : Mapped["User"] = relationship(back_populates="customers")
-    products : Mapped[List['Product']] = relationship(back_populates="customer")
 
 
 class Product(Base):
@@ -46,11 +45,12 @@ class Product(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     title: Mapped[str]
     description: Mapped[str]
-    price : Mapped[float] = mapped_column("price",FLOAT, CheckConstraint("price > 0") )
-    prog_lang: Mapped[str]
-    customer_id: Mapped[int] = mapped_column(ForeignKey("customers.id"))
+    price : Mapped[str] = mapped_column(__type_pos=VARCHAR)
+    status : Mapped[str] = mapped_column(__type_pos=VARCHAR)
+    prog_lang_id: Mapped[str] = mapped_column(ForeignKey("prog_langs.id"))
+    user_id: Mapped[int] = mapped_column("user_id" , BIGINT ,ForeignKey("users.chat_id"))
     join_date: Mapped[str] = mapped_column(__type_pos=TIMESTAMP, default=datetime.datetime.now())
-    customer : Mapped['Customer'] = relationship(back_populates="products")
+    prog_lang : Mapped['ProgLang'] = relationship(back_populates="products")
 
 
 

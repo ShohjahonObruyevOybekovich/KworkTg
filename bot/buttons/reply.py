@@ -19,5 +19,17 @@ def menu_btn(lang):
     ]
     return ReplyKeyboardMarkup(keyboard=design , resize_keyboard=True)
 
+def customer_menu(lang):
+    texts: dict = data[lang]
+    k1 = KeyboardButton(text = texts['order'])
+    k2 = KeyboardButton(text = texts['order_history'])
+    k3 = KeyboardButton(text = texts['back'])
+
+    design = [
+        [k1 , k2],
+        [k3],
+    ]
+    return ReplyKeyboardMarkup(keyboard=design , resize_keyboard=True)
+
 
 

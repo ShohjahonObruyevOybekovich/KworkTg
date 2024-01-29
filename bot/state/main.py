@@ -6,3 +6,15 @@ class UserState(StatesGroup):
     prog_lang = State()
     lang = State()
     phone = State()
+
+class CustomerState(StatesGroup):
+    customer_menu = State()
+
+class ProductState(StatesGroup):
+    title = State()
+    description = State()
+    prog_lang = State()
+    price = State()
+
+
+
