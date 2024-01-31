@@ -15,6 +15,8 @@ class ProductState(StatesGroup):
     description = State()
     prog_lang = State()
     price = State()
+    enum = State()
+
 
 
 

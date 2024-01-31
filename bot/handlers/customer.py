@@ -2,17 +2,18 @@ import datetime
 
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery
-from sqlalchemy import select, insert
+from sqlalchemy import select, insert, update, delete
 
-from bot.buttons.inline import prog_lang_ikm, accept_denied_btn
+from bot.buttons.inline import prog_lang_ikm, accept_denied_btn, del_edit_btn
 from bot.buttons.reply import customer_menu, menu_btn
-from bot.buttons.text import product_format
+from bot.buttons.text import product_format, proekt_2_format
 from bot.enums.main import StatusEnum
 from bot.lang.main import data
 from bot.state.main import CustomerState, ProductState
 from db.connect import session
-from db.model import Customer, Product
+from db.model import Customer, Product, ProgLang
 from dispatcher import dp
+from icecream import ic
 
 
 @dp.message(lambda msg : msg.text in [data['uz']["customer"],data['en']["customer"]])
@@ -34,8 +35,14 @@ async def customer_menu_handler(msg : Message , state : FSMContext):
     if msg.text == data[lang]['order']:
         await state.set_state(ProductState.prog_lang)
         await msg.answer(text = data[lang]["prog_lang"], reply_markup=prog_lang_ikm())
-    elif msg.text == data[lang]['order_history']: # TODO
-        pass
+    elif msg.text == data[lang]['order_history']:
+        product = select( Product.title,Product.description, Product.price, ProgLang.name, Product.status).join(ProgLang).where(Product.user_id == msg.from_user.id)
+        data_user = session.execute(product).fetchall()
+        for i in data_user:
+            format1 = proekt_2_format.format(i.title, i.description, i.price, i.name, i.status)
+            ic(format1)
+            await msg.answer(text=format1, reply_markup=del_edit_btn(lang))
+
     elif msg.text == data[lang]['back']:
         await msg.answer("Back" , reply_markup=menu_btn(lang))
 
@@ -85,12 +92,42 @@ async def price_handler(msg: Message, state: FSMContext):
     session.execute(insert(Product).values(**product))
     session.commit()
     product = session.execute(select(Product).where(Product.title == product.get("title"))).fetchone()[0]
-    await state.clear()
     await state.set_data({"lang" : lang})
     format = product_format.format(product.id ,  product.prog_lang.name ,product.title , product.description , product.price)
-    await msg.bot.send_message(1148477816 ,text= format, reply_markup=accept_denied_btn())
-    await msg.answer("Adminga Tastiqlash uchun yuborildi ⏳", reply_markup=customer_menu(lang))
 
+    try:
+        await msg.bot.send_message(5995495508 ,text= format, reply_markup=accept_denied_btn())
+        await state.set_state(ProductState.enum)
+    except:
+        await msg.answer(text='Bot bu yunalish buyicha freelanser topolmadi ')
+    await msg.answer(text=data[lang]["send_to_admin"],reply_markup=customer_menu(lang))
+
+
+# Xato callback bulish kk
+@dp.callback_query(ProductState.enum)
+async def description_handler(msg: Message, state: FSMContext):
+    data_title = await state.get_data()
+    data_title['title'] = msg.text
+    ic(msg.text)
+    lang = data_title.get("lang")
+    if data_title['enum'] == "accept":
+        query1 = update(Product).values(status  = "ACCEPTED").where(Product.title == msg.text)
+        session.execute(query1)
+        session.commit()
+        query2 = select(Product.user_id).where(Product.title == msg.text)
+        chat_id = session.execute(query2)
+        await msg.bot.send_message(chat_id=chat_id, text=data[lang]["ACCEPT"])
+
+    elif data_title['enum'] == "deny":
+        data_title = ProductState.title()
+        data_title['title'] = msg.text
+        lang = data_title.get("lang")
+        query2 = select(Product.user_id).where(Product.title == msg.text)
+        chat_id = session.execute(query2)
+        query1 = delete(Product).where(Product.title ==msg.text)
+        session.execute(query1)
+        session.commit()
+        await msg.bot.send_message(chat_id=chat_id, text=data[lang]["DENIED"])
 
 
 

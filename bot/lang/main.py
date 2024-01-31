@@ -12,6 +12,12 @@ data = {
         "title": "Buyurtma nomini kiriting 👇",
         "description": "Buyurtma haqida malumot kiriting 👇",
         "price": "Buyurtma narxini kiriting 🤑",
+        "send_to_admin": "Adminga Tastiqlash uchun yuborildi ⏳",
+        "ACCEPT" : "🟢 Qabul qilindi !",
+        "DENIED" : "🔴 Rad etildi !",
+        "delete_order" : "🗑 Buyurtmani olib tashlash",
+        "edit_order" : "✏️ Buyurtmani taxrirlash"
+
     },
     "en": {
         "freelancer": "🧑🏻‍💻 I am freelancer",
@@ -25,6 +31,11 @@ data = {
         "prog_lang": "Choose programming language 👇",
         "title": "Enter order's title 👇",
         "description": "Enter description for your order 👇",
-        "price": "Enter price for your order 🤑"
+        "price": "Enter price for your order 🤑",
+        "send_to_admin": "Sended to admin for confirming ⏳",
+        "ACCEPT" : "🟢 ACCEPTED !"  ,
+        "DENIED": "🔴 DENIED",
+        "delete_order" : "🗑 Delete order",
+        "edit_order" : "✏️ Edit order"
     },
 }
