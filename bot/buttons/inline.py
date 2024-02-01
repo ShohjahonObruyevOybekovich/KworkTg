@@ -1,6 +1,8 @@
+from itertools import chain
+
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from sqlalchemy import select
-
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 from bot.lang.main import data
 from db.connect import session
 from db.model import ProgLang
@@ -33,3 +35,13 @@ def del_edit_btn(lang):
     del_btn = InlineKeyboardButton(text=data[lang]['delete_order'], callback_data='deleting_order')
     edit_btn = InlineKeyboardButton(text=data[lang]['edit_order'], callback_data='editing_order')
     return InlineKeyboardMarkup(inline_keyboard=[[del_btn,edit_btn]])
+
+def ruyxat_order_btn(title):
+    keyboard = InlineKeyboardBuilder()
+
+    buttons = [
+        [title]
+    ]
+    keyboard.row(*[InlineKeyboardButton(text=i, callback_data=i) for i in chain(*buttons)], width=1)
+    # post_page += 1
+    return keyboard.as_markup()

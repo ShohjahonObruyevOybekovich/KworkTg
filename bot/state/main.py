@@ -16,6 +16,7 @@ class ProductState(StatesGroup):
     prog_lang = State()
     price = State()
     enum = State()
+    zakaz_state = State()
 
 
 

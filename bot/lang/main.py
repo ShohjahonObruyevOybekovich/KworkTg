@@ -16,7 +16,8 @@ data = {
         "ACCEPT" : "🟢 Qabul qilindi !",
         "DENIED" : "🔴 Rad etildi !",
         "delete_order" : "🗑 Buyurtmani olib tashlash",
-        "edit_order" : "✏️ Buyurtmani taxrirlash"
+        "edit_order" : "✏️ Buyurtmani taxrirlash",
+        "orders_inline" : "🗞 Buyurtmalar ruyxati"
 
     },
     "en": {
@@ -36,6 +37,7 @@ data = {
         "ACCEPT" : "🟢 ACCEPTED !"  ,
         "DENIED": "🔴 DENIED",
         "delete_order" : "🗑 Delete order",
-        "edit_order" : "✏️ Edit order"
+        "edit_order" : "✏️ Edit order",
+        "orders_inline" : "🗞 Orders list"
     },
 }
